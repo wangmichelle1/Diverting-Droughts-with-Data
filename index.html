@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html> 
+
+<head>
+    <meta charset="utf-8">
+    <!-- Link css file -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Link to leaflet css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+    crossorigin=""/>
+
+    <!-- Title of the web page -->
+    <title>Massachusetts Drought and Precipitation Awareness</title>
+
+    <!-- Link to d3 library -->
+    <script src="js/d3.v6.1.1/d3.min.js"></script>
+
+    <!-- Link to leaflet js -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""></script>    
+</head>
+
+<body>
+    <!-- Title of our webpage -->
+    <h1 class="centered">Diverting Droughts with Data: Designing a Visualization Tool to Drive Water Conservation Efforts Across Massachusetts</h1>
+
+    <!-- Including tabs for our visualization tool-->
+    <div class="tab">
+        <button class="tablinks" onclick="openTab(event, 'Acknowledgements')">Acknowledgements</button>
+        <button class="tablinks" onclick="openTab(event, 'Visualization3')">Linked Bar and Scatter Plot</button>
+        <button class="tablinks" onclick="openTab(event, 'Visualization2')">Line Chart + Scatter Plot</button>
+        <button class="tablinks" onclick="openTab(event, 'Visualization1')">Massachusetts Region Map</button>
+        <button class="tablinks" id="defaultOpen" onclick="openTab(event, 'About')">About</button>
+    </div>
+
+    <!-- Describing background information as well as motivations for this project -->
+    <div id="About" class="tabcontent">
+        <h2>Motivation</h2>
+
+        <div>
+            <p>
+                Water is a precious resource anywhere as it is used for many direct and indirect purposes such as drinking, cooking, producing steel for automobiles, and electricity. Specifically, we are interested in looking at water in the context of Massachusetts. In some areas of Massachusetts, there is currently a Level 2 Drought. It would be valuable to study past precipitation and drought levels in Massachusetts to get a better understanding of the water supply in conjunction with levels of drought. 
+            </p>
+            <p>
+                This project is intended to provide visualizations to be used by the general public and citizens of Massachusetts, making them more aware of this drought issue and take appropriate action. Clearly, the state is already keeping watch on it and staying aware of it through the Massachusetts Drought Management Plan. However, the citizens should also be informed and aware so they can be encouraged to focus on water conservation. Solving this issue is therefore important to ensure that water remains an accessible resource to everyone in Massachusetts. Water is a resource that many take for granted, and there are likely many individuals in Massachusetts who are unaware of the level of possible water scarcity they may face in the future. These visualizations help to guarantee that citizens in Massachusetts can maintain access to water despite any droughts that may occur where they live. Even though our visualizations provide past precipitation and drought data, it can make citizens more knowledgeable, aware of, and help them project precipitation and drought levels in Massachusetts, specifically in the region they live in. From there, they can be more aware moving forward and possibly take preventative measures. The visualization will not be too complex as the public is not familiar with using lots of tooltips and other visualization features. We want the people in Massachusetts to conserve more water. They can use our visualizations to become more motivated as to exactly what state of water shortage specific regions in Massachusetts are in.  For instance, suppose an environmentalist in the general public wants to encourage people in Massachusetts to conserve more water. The environmentalist can hold a meeting with individuals from Boston to push more water conservation efforts. The environmentalist can give a presentation during this meeting and use our visualization tool to strengthen their claims. The user can then bring attention to, for instance, certain regions that have relatively less rainfall than other regions to assert that they need to be prioritized with water conservation efforts.
+
+            </p>
+        </div> 
+
+        <h2>Background</h2>
+        <div>
+            <h4>Data</h4>
+            <div>
+                <p>
+                The precipitation database data is made available to the public on the Mass.gov website, which is owned by the Commonwealth of Massachusetts. The database that holds the data in the file has been monitored by the Massachusetts Department of Conservation and Recreation’s (DCR) Office of Water Resources. The website states that the precipitation data itself derives from observers and cooperative agencies. The standardized precipitation index (SDI) data is on the same website as the precipitation database data. The standardized precipitation index data is calculated monthly from values in the precipitation database data. Hence, it relies on data collected from the same sources of the precipitation database data. The link to the website with the raw data is here:
+                <a href="https://www.mass.gov/info-details/precipitation-data">Precipitation and Drought Raw Data</a>
+                </p>
+
+                <p>The precipitation database data, especially since it’s derived from a government agency, overall seems reliable. However, there are some minor possible issues with how the data was collected. The Mass.gov website says about 60 precipitation observation stations collected the precipitation data, but there are no details on the identity and legitimacy of the observers themselves. Hence, it’s unclear whether the stations are reliable and provide accurate data. Furthermore, each station across the Massachusetts cities may be using different measurement tools with varying levels of precision and accuracy. Therefore, we cannot conclude whether the data is standardized. The cooperative agencies that are also referred to on the Mass.gov website have unknown identities. Thus, like the ambiguous observers, the precision, accuracy, and standardization of the agencies’ precipitation data cannot be verified. Furthermore, the precipitation measurements are rounded to two decimal places on the public dataset. There is a possibility that this level of precision may not allow us to make the most effective visualizations possible. The rounding restricts us from presenting the most detailed variation in precipitation patterns across Massachusetts (for example, a value of 2.883 inches of precipitation would be visualized the same way as 2.881 inches). Also, the measurement tools, observation stations, and cooperative agencies may have evolved, along with the precision and accuracy of the precipitation data. For instance, the cooperative agencies could have relied on tools in 1900 that were not as competent at collecting precipitation data as those used in 2015. Therefore, there’s a chance that precipitation data from older years such as 1900 may not be as accurate as that from more recent years such as 2015. Finally, each region in Massachusetts does not have the same amount of precipitation measurements in the data set. Some have more measurements than others, so our visualization could have more precise information about the precipitation pattern of regions in Massachusetts represented by more rows in the data set. There is a substantial amount of data for each region, but this consideration is still important to keep in mind. These same biases and ethical considerations apply to the SPI data since it derives from the precipitation database data. We will be relying on the 2017, 2018, and 2019 SPI data since they are the only ones available that most directly correlate with the precipitation database data we are using, which was generated in October 2019. The 2017-2019 SPI data might not contain the most representative values indicating the drought severity of a Massachusetts region. There might have been some weather anomalies throughout 2017-2019 that may have caused a region in Massachusetts to experience more or less precipitation during those years than usual. However, we are assuming the tools used to collect values for the precipitation database have improved over time. Hence, we think the 2017-2019 data is reliable since it was gathered only 4-6 years ago.
+                </p>
+            </div>
+
+            <!-- A demo video that instructs users how to navigate through the visualization tool to address our domain tasks -->
+            <h4>Demo Video</h4>
+            <div>
+                <video controls="controls">
+                    <source type="video/mp4" src="demo_video.mp4" >   
+                    <track src="demo_video_caption.vtt" label="English" kind="captions" srclang="en-us" default>
+                </video>
+            </div>
+
+            </div>
+
+            <!-- Link to final report -->
+            <h4>Report</h4>
+            <div>
+                <ul>
+                    <li>
+                        <a href="DS4200_Final_Project.pdf">Final Report</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="Visualization1" class="tabcontent">
+        <!-- Instructions for how to navigate through the map of Massachusetts -->
+        <p class="blue">Zoom in/out of the Massachusetts map as needed. Click on different markers for different counties and refer to the legend to see which Massachusetts region you live in based on the color of your county's marker.</p>
+        <!-- Split tab content to separate containers -->
+        <div class="container">
+            <div class="child1">
+                <!-- Create the section for the legend -->
+                <div class="legend"></div>
+            </div>
+            <div class="child2">
+                <!-- Create the section that contains the map of Massachusetts -->
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Visualization2" class="tabcontent">
+        <!-- Create separate section for content (visualization) of webpage -->
+        <div class="container">
+            <div class="child1">
+                <!-- Legend for the line and scatter plot (unlinked) -->
+                <div class="legend">
+                    <!-- Add checkbox filter for regions for the line and unlinked scatter plot-->
+                    <div class="region-filter">
+                        <!-- Reformatting the page to minimize scrolling-->
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+
+                        <!-- Define what "SPI" means because it is a critical feature in our visualizations -->
+                        <p class="blue">"SPI" refers to  the number of standard deviations from normal precipitation totals a certain region experienced over a particular month in 2017, 2018, or 2019. Positive values refer to times when precipitation totals were higher than normal, while negative values refer to times when precipitation totals were lower than normal.</p>
+
+                        <!-- Allows users to filter the unlinked line and scatter plots by region -->
+                        <p class="blue">Filter Plots by Region: </p>
+                        <label for="Cape"><input type="checkbox" name="check2" value="Cape Cod and Islands" class="region-button">Cape Cod and Islands</label><br>
+                        <label for="Central"><input type="checkbox" name="check2" value="Central"class="region-button">Central</label><br>
+                        <label for="Connecticut"><input type="checkbox" name="check2" value="Connecticut River" class="region-button">Connecticut River</label><br>
+                        <label for="Northeast"><input type="checkbox" name="check2" value="Northeast" class="region-button">Northeast</label><br>
+                        <label for="Southeast"><input type="checkbox" name="check2" value="Southeast" class="region-button">Southeast</label><br>
+                        <label for="Western"><input type="checkbox" name="check2" value="Western" class="region-button">Western</label><br>
+                        <ul>
+                    </div>
+
+                    <!-- Add instructions for how to access the tooltip for the plots above the map-->
+                    <p1 class="blue" class="centered">** Hover over a point to see the data it represents.</p1>
+
+
+                </div>
+            </div>
+            
+            <div class="child2">
+                <!-- Create the section that contains a line chart and scatterplot-->
+                <div class="lineAndScatter">
+                    <!-- Create the section that contains the line chart -->
+                    <div id="line">
+                        <!-- Add chart title -->
+                        <h3 class="centered">Precipitation Over Selected Time and Regions</h3>
+
+                        <!-- Add instructions for how to get data to show on the line chart and how to interact with it-->
+                        <p1 class="blue" class="centered">Select a region(s) on the left and a year in the drop down menu. Then, click on the button to see the corresponding data.</p1>
+
+                        <br>
+                        <br>
+
+                        <p1 class="blue" class="centered">**Note that some regions lack data for certain years, so not all 6 lines will show for each year.</p1>
+
+                        <!-- Add drop down menu filter for the years represented on the line chart-->
+                        <div class="year-filter1">
+                            <p class="blue">Filter by Year: </p>
+                            <select name="check" id="selectYear1"></select>
+                        </div> 
+
+
+                        <!-- Create a button that allows data to be shown on the line chart when clicked -->
+                        <div>   
+                            <p>
+                                <button id="btn1">Display Line Chart</button>
+                            </p>
+                        </div>
+
+                        <!-- Get the two charts (line and scatterO to align -->
+                        <br>
+                        <br>
+                        <br>
+
+                    </div>    
+            
+                    <!-- Create the section that contains the scatter graph-->
+                    <div id="scatter">
+                        <!-- Add chart title -->
+                        <h3 class="centered">A Projection of Whether Lower Precipitation Values Indicate a Higher Risk of Intense Droughts</h3>
+
+                        <!-- Add instructions for how to get data to show on the scatter plot and how to interact with it-->
+                        <p1 class="blue" class="centered">Select a region(s) on the left as well as year(s) and month(s) in the checkboxes. Then, click on the button to see the corresponding data.</p1>
+
+                        <p class="blue" class="centered">**3-Month SPIs shown: values are based on "look-back" periods of three months.</p>
+                   
+                        <!-- Add checkbox filter for years -->
+                        <div class="year-filter2">
+                            <p class="blue">Filter by Year: </p>
+                            <label for="17"><input type="checkbox" name="check3" value="2017" class="year-button">2017</label>
+                            <label for="18"><input type="checkbox" name="check3" value="2018" class="year-button">2018</label>
+                            <label for="19"><input type="checkbox" name="check3" value="2019" class="year-button">2019</label>
+                        </div>
+
+                        <!-- Add checkbox filter for months -->
+                        <div class="month-filter2">
+                            <p class="blue">Filter by Month: </p>
+                            <label for="January"><input type="checkbox" name="check3" value="JAN" id="January" class="month-button">JAN</label> 
+                            <label for="Februrary"><input type="checkbox" name="check3" value="FEB" id="Februrary" class="month-button">FEB</label>
+                            <label for="March"><input type="checkbox" name="check3" value="MAR" id="March" class="month-button">MAR</label> 
+                            <label for="April"><input type="checkbox" name="check3" value="APR" id="April" class="month-button">APR</label> 
+                            <label for="May"><input type="checkbox" name="check3" value="MAY" id="May" class="month-button">MAY</label> 
+                            <label for="June"><input type="checkbox" name="check3" value="JUN" id="June" class="month-button">JUN</label> 
+                            <label for="July"><input type="checkbox" name="check3" value="JUL" id="July" class="month-button">JUL</label> 
+                            <label for="August"><input type="checkbox" name="check3" value="AUG" id="August" class="month-button">AUG</label> 
+                            <label for="September"><input type="checkbox" name="check3" value="SEP" id="September" class="month-button">SEP</label>
+                            <label for="October"><input type="checkbox" name="check3" value="OCT" id="October" class="month-button">OCT</label> 
+                            <label for="November"><input type="checkbox" name="check3" value="NOV" id="November" class="month-button">NOV</label> 
+                            <label for="December"><input type="checkbox" name="check3" value="DEC" id="December" class="month-button">DEC</label> 
+                        </div>
+                        <div>   
+                            <!-- Add a button that allows data to be shown on the scatter chart -->
+                            <p>
+                                <button id="btn2">Display Scatter Plot</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>  
+
+    <div id="Visualization3" class="tabcontent">
+
+        <!-- Create the section that contains a bar chart and a scatter plot that are linked together through brushing and clicking-->
+        <div class="container">
+            <div class="link">
+                <div class="child3">
+                    <!-- Define what "SPI" means because it is a critical feature in our visualizations -->
+                    <p class="blue">"SPI" refers to  the number of standard deviations from normal precipitation totals a certain region experienced over a particular month in 2017, 2018, or 2019. Positive values refer to times when precipitation totals were higher than normal, while negative values refer to times when precipitation totals were lower than normal.</p>
+                    <div class="year-filter3">
+                        <!-- Create a drop down menu that allows users to filter the charts by year -->
+                        <p class="blue">Filter Charts by Year: </p>
+                            <select id="selectYear2">
+                                <option>2017</option>
+                                <option>2018</option>
+                                <option>2019</option>
+                            </select>
+                        <p>
+
+                        <!-- Add instructions for how to get data to appear -->
+                        <p class="blue" class="centered">Select a year using the drop down menu. Then, click on the button to see the corresponding data across both graphs.</p>
+
+                        <!-- Add instructions for accessing the tooltip and how to interpret the two charts together -->
+                        <p1 class="blue">** Hover over a chart element to see the data it represents. For each region, compare the number of points to the left and/or right of the vertical line where SPI = 0 in the scatter plot to the annual precipitation of that region as shown in the bar chart. </p1>
+                        <br>
+
+                        <br>
+
+                            <!-- Create a button that allows users to see data presented on the 2 charts -->
+                            <button id="btn3">Get Data for the Selected Year</button>
+                            <!-- Add a legend beside the 2 charts -->
+                            <div class="legend"></div>
+                        </p>
+                    </div>
+                </div>
+                <div class="child4">
+                    <div id="link1">
+                        <!-- Add a title and linking directions above the bar chart -->
+                        <h4 class="centered">Annual Precipitation for Each Region</h4>
+                        <p class="blue" class="centered">Click on a bar to highlight points that represent the same region.</p>
+                        <p class="blue" class="centered">**Click on white spaces of the scatter plot to unselect bar and highlighted points.</p>
+                    </div>
+                    <div id="link2">
+                        <!-- Add a title and linking directions above the scatter plot -->
+                        <h4 class="centered">Precipitation vs. SPI</h4>
+                        <p class="blue" class="centered">Brush over points to highlight bars that represent the same region.</p>
+                        <p class="blue" class="centered">**3-Month SPIs shown: values are based on "look-back" periods of three months.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Acknowledgements" class="tabcontent">
+        <!-- Citing the additional resources used to complete this assignment -->
+        <h2>Acknowledgements</h2>
+        <ul>
+            <li><a href="https://stackoverflow.com/questions/39964570/how-to-filter-data-with-d3-js">How to Filter Data with D3.js</a></li>
+            <li><a href="https://stackoverflow.com/questions/12151637/jsrender-json-column-name-with-space">Referencing Column/Field Names with Space Characters</a></li>
+            <li><a href="https://d3-graph-gallery.com/graph/line_basic.html">D3 Basic Line Chart</a></li>
+            <li><a href="https://stackoverflow.com/questions/20668961/d3-how-do-i-remove-comma-separator-from-my-xaxis">Removing Comma Separator from X-Axis</a></li>
+            <li><a href="https://observablehq.com/@d3/d3v6-migration-guide#group">D3 6.0 Migration Guide</a></li>
+            <li><a href="https://github.com/d3/d3/issues/466">d3.format()(-1) yields "âˆ’1" with d3.min.js</a></li>
+            <li><a href="https://d3-graph-gallery.com/graph/custom_legend.html">Legends in D3 Javascript</a>
+            <li><a href="https://stackoverflow.com/questions/15044385/d3-map-with-checkbox-filtering">D3 Map With Checkbox Filtering</a></li>
+            <li><a href="https://www.javascripttutorial.net/javascript-dom/javascript-checkbox/">Checkbox D3 Javascript</li>
+            <li><a href="https://stackoverflow.com/questions/1771786/question-mark-and-colon-in-javascript">Conditional Operators</a></li>
+            <li><a href="https://jonathansoma.com/lede/storytelling/d3/user-input-checkboxes-dropdowns/">User input (Checkboxes, Dropdowns, Radio Buttons)</a></li>
+            <li><a href="https://stackoverflow.com/questions/2003815/how-to-remove-element-from-an-array-in-javascript">How to Remove and Element From an Array in JavaScript</a></li>
+            <li><a href="https://www.w3schools.com/js/js_if_else.asp">Conditional Statements in JavaScript</a></li>
+            <li><a href="https://www.w3schools.com/js/js_arrays.asp">JavaScript Arrays</a></li>
+            <li><a href="https://d3-graph-gallery.com/graph/line_filter.html">Line plot with Dropdown to Filter Group in d3.js</a></li>
+            <li><a href="https://github.com/glynnbird/usstatesgeojson/blob/master/massachusetts.geojson">Resource Used for the GeoJson File for the Massachusetts Map</a></li>
+            <li><a href="https://medium.com/@ivan.ha/using-d3-js-to-plot-an-interactive-map-34fbea76bd78">Using D3.js to Plot an Interactive Map</a></li>
+            <li><a href="https://www.d3indepth.com/geographic/">Making Maps with D3</a></li>
+            <li><a href="https://www.w3schools.com/graphics/svg_polygon.asp">SVG Polygon</a></li>
+            <li><a href="https://stackoverflow.com/questions/20632226/how-to-resize-polygon-in-svg">How to Resize Polygon in SVG?</a></li>
+            <li><a href="https://stackoverflow.com/questions/19773081/better-way-to-position-svgpolygon">Better Way to Position SVG Polygon</a></li>
+            <li><a href="https://stackoverflow.com/questions/8563240/how-to-get-all-checked-checkboxes">How to Get All Checked Checkboxes</a></li>
+            <li><a href="https://stackoverflow.com/questions/21153074/d3-positioning-tooltip-on-svg-element-not-working">Positioning Tooltip on SVG Element Not Working</a></li>
+            <li><a href="https://leafletjs.com/examples/map-panes/">Create Map Panes Using Leaflet</a></li>
+            <li><a href="https://stackoverflow.com/questions/11252753/rotate-x-axis-text-in-d3">Rotate X Axis Text in D3</a></li>
+            <li><a href="http://wrobstory.github.io/2013/11/D3-brush-and-tooltip.html">Cooperative Brushing and Tooltips in D3</a></li>
+            <li><a href="https://stackoverflow.com/questions/42204194/leaflet-only-renders-into-one-corner">Fixing Leaflet Map that Render in One Corner</a></li>
+            <li><a href="https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color">Leaflet Map Changing Marker Color</a></li>
+            <li><a href="https://leafletjs.com/examples/layers-control/">Leaflet Add Marker Layer</a></li>
+            <li><a href="https://stackoverflow.com/questions/20816173/close-all-popups-with-leaflet-js">Close All Popups with Leaflet.js</a></li>
+        </ul>
+    </div>
+
+    <!-- Link javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
